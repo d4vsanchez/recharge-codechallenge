@@ -19,7 +19,7 @@ The application exposes a small API in the `window` variable, this API has the f
 event to register a custom component for a given section. There are 3 sections: `product`, `product-image` and
 `product-description`.
 
-(Add image)
+![](./image.png)
 
 ### Example custom components
 
