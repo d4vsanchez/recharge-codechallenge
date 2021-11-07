@@ -3,7 +3,9 @@ import type { FC } from 'react'
 import * as React from 'react'
 import { useMemo, useCallback, useState, useEffect, useContext, createContext } from 'react'
 
-const ComponentRegistrarContext = createContext<(aSection: string) => (() => JSX.Element | null) | null>(() => null)
+const ComponentRegistrarContext = createContext<(aSection: string) => ((props: any) => JSX.Element | null) | null>(
+  () => null
+)
 
 export const ComponentRegistrarProvider: FC = ({ children }) => {
   const { current: customComponentListener } = React.useRef(new RegisterComponentListener())
