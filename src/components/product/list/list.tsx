@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import type { Product as ProductType } from '@/types/Product'
 
 import styles from '@/styles/ProductList.module.css'
-import { ProductContainer } from '@/components/product/product-container'
+import { ProductContainer } from '@/components/product/container'
 
 interface ProductListProps {
   products: Array<ProductType>
