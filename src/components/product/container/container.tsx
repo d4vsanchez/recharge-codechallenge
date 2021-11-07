@@ -6,7 +6,7 @@ import * as React from 'react'
 import styles from '@/styles/ProductContainer.module.css'
 import { ProductImage } from '@/components/product/image'
 import { useComponentRegistrar } from '@/hooks/useCustomComponent'
-import { ProductDescription } from '@/components/product/product-description'
+import { ProductDescription } from '@/components/product/description'
 import { ProductStepper } from '../stepper'
 
 interface ProductContainerProps {
