@@ -1,3 +1,12 @@
 .container {
   padding: 20px;
 }
+
+.container .image {
+  max-width: 345px;
+  max-height: 345px;
+}
+
+.container .image img {
+  width: 100%;
+}

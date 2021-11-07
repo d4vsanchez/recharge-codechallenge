@@ -33,7 +33,9 @@ export const ProductContainer: FC<ProductContainerProps> = ({ product }) => {
 
   return (
     <article className={styles.container}>
-      <ProductImage product={product} />
+      <div className={styles.image}>
+        <ProductImage product={product} />
+      </div>
       <ProductDescription product={product} />
       <ProductStepper value={quantity} onSubtract={handleQuantitySubtract} onAdd={handleQuantityAdd} />
     </article>

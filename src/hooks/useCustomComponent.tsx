@@ -21,7 +21,14 @@ export const ComponentRegistrarProvider: FC = ({ children }) => {
     }
   }, [setComponent, customComponentListener])
 
-  const getComponentFor = useCallback((aSection: string) => components[aSection] || null, [components])
+  const getComponentFor = useCallback(
+    (aSection: string) => {
+      if (!components[aSection]) return null
+
+      return components[aSection].bind(React)
+    },
+    [components]
+  )
 
   return <ComponentRegistrarContext.Provider value={getComponentFor}>{children}</ComponentRegistrarContext.Provider>
 }
