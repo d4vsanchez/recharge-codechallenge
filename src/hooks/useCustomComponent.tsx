@@ -25,6 +25,7 @@ export const ComponentRegistrarProvider: FC = ({ children }) => {
     (aSection: string) => {
       if (!components[aSection]) return null
 
+      window.React = React
       return components[aSection].bind(React)
     },
     [components]
