@@ -1,0 +1,21 @@
+.container {
+  text-align: center;
+}
+
+.btn {
+  background-color: rgb(3, 164, 196);
+  border: none;
+  color: #ffffff;
+  padding: 12px 32px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  background-color: rgb(173, 219, 232);
+}
+
+.value {
+  display: inline-block;
+  width: 64px;
+}
