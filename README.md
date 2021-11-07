@@ -1,34 +1,105 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Recharge Code Challenge
 
-## Getting Started
+We want to be able to register 3rd-party components in an application and replace the default component
+in case there is a component already registered.
 
-First, run the development server:
+The PoC app works showing a list of products (the data can be found in `data/products.json`) that can be
+modified using the SDK of the application that is exposed in the `MyApp` variable.
 
-```bash
-npm run dev
-# or
-yarn dev
+## How it works
+
+The application has a component registrar manager that listens to custom events in the DOM. When a custom
+event to register a component happens, the component registrar manager triggers a callback that is
+listener by a React Custom Hook (`hooks/useCustomComponent.tsx`) whose responsibility is to register the
+custom component and provide a simplified API to access it.
+
+The application exposes a small API in the `window` variable, this API has the following methods:
+
+- `MyApp.registerComponent(aSection: string, theComponent: ReactComponent)`: This method will trigger the custom
+event to register a custom component for a given section. There are 3 sections: `product`, `product-image` and
+`product-description`.
+
+(Add image)
+
+### Example custom components
+
+#### Product without image and use tags
+
+```javascript
+function ProductWithTags({ product }) {
+  return /*#__PURE__*/React.createElement("article", null, /*#__PURE__*/React.createElement("h1", null, product.title), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      width: '90%',
+      flexWrap: 'wrap',
+      justifyContent: 'center'
+    }
+  }, product.tags.map(tag => /*#__PURE__*/React.createElement("span", {
+    style: {
+      margin: '10px'
+    }
+  }, tag))));
+}
+
+window.MyApp.registerComponent('product', ProductWithTags);
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Rounded product image
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```javascript
+function RoundedProductImage({ product }) {
+  return /*#__PURE__*/ React.createElement("img", {
+    src: product.featured_image,
+    style: {
+      borderRadius: "100%"
+    }
+  });
+}
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+window.MyApp.registerComponent('product-image', RoundedProductImage);
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+#### Grayscale product image
 
-## Learn More
+```javascript
+function GrayscaleProductImage({ product }) {
+  return /*#__PURE__*/ React.createElement("img", {
+    src: product.featured_image,
+    style: {
+      filter: "grayscale(100%)"
+    }
+  });
+}
 
-To learn more about Next.js, take a look at the following resources:
+window.MyApp.registerComponent('product-image', GrayscaleProductImage);
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Reverse text title
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```javascript
+function ReverseProductTitle({ product }) {
+  const reverseText = Array.from(product.title).reverse().join("");
+  return /*#__PURE__*/ React.createElement("h1", null, reverseText);
+}
 
-## Deploy on Vercel
+window.MyApp.registerComponent('product-description', ReverseProductTitle);
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## How to run the application in Dev mode
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Clone the repository
+2. Install the dependencies using Yarn: `yarn install`
+3. Execute the application using the development environment: `yarn dev`
+
+## Caveats
+
+- This PoC doesn't support the custom components using JSX, the user must transpile the components before using them
+in the application. This could be improved in a next version
+by adding a Babel transpilation step to the `registerComponent` function.
+
+- There are no unit tests for this PoC. This could be easily fixed if neccesary.
+
+- There is no UI for the interaction with the API. With the
+current implementation, no backend is needed. If this is desired, the UI could be implemented.
+
+- Custom components are not persisted between page reloads due to the abscence of a backend.
